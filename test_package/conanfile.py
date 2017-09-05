@@ -20,5 +20,7 @@ class AzureiotsdkcTestConan(ConanFile):
         self.copy('*.so*', dst='bin', src='lib')
 
     def test(self):
-        os.chdir("bin")
-        self.run(".%sexample" % os.sep)
+        cmake = CMake(self)
+        cmake.configure(source_dir=self.conanfile_directory, build_dir="./")
+        cmake.build()
+        cmake.test()

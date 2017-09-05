@@ -18,6 +18,10 @@ class AzureiotsdkcConan(ConanFile):
     def source(self):
         tools.get("https://github.com/Azure/azure-iot-sdk-c/archive/2017-08-11.tar.gz")
 
+    def configure(self):
+        if self.settings.os == "Windows" and self.settings.compiler == "Visual Studio":
+            self.options.shared = False
+
     def build(self):
         conan_magic_lines='''project(azure_iot_sdks)
         include(../conanbuildinfo.cmake)
