@@ -1,5 +1,5 @@
 from os import path
-from conans import ConanFile, CMake, tools
+from conans import ConanFile, CMake, tools, util
 
 
 class AzureiotsdkcConan(ConanFile):
@@ -26,6 +26,8 @@ class AzureiotsdkcConan(ConanFile):
         self.copy(pattern="parson.h", dst=path.join(self.release_name, "parson"), src=self.deps_cpp_info["Parson"].include_paths[0])
         self.copy(pattern="parson.c", dst=path.join(self.release_name, "parson"), src=path.join(self.deps_cpp_info["Parson"].rootpath, "src"))
         tools.replace_in_file("%s/CMakeLists.txt" % self.release_name, "project(azure_iot_sdks)", conan_magic_lines)
+        util.files.mkdir(path.join(self.deps_cpp_info["Azure-uAMQP-C"].include_paths[0], "azureiot"))
+        util.files.mkdir(path.join(self.deps_cpp_info["Azure-uMQTT-C"].include_paths[0], "azureiot"))
         cmake = CMake(self)
         cmake.definitions["build_as_dynamic"] = self.options.shared
         cmake.definitions["skip_samples"] = True
