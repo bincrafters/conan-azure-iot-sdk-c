@@ -12,7 +12,7 @@ class AzureiotsdkcConan(ConanFile):
     options = {"shared": [True, False]}
     default_options = "shared=False"
     generators = "cmake"
-    requires = "Azure-uMQTT-C/1.0.41@bincrafters/stable", "Azure-uAMQP-C/1.0.41@bincrafters/stable"
+    requires = "Azure-uMQTT-C/1.0.41@bincrafters/stable", "Azure-uAMQP-C/1.0.41@bincrafters/stable", "Parson/0.1.0@bincrafters/stable"
     release_name = "azure-iot-sdk-c-2017-08-11"
 
     def source(self):
@@ -23,7 +23,8 @@ class AzureiotsdkcConan(ConanFile):
         include(../conanbuildinfo.cmake)
         conan_basic_setup()
         '''
-        print(self.deps_cpp_info.res_paths)
+        self.copy(pattern="parson.h", dst=path.join(self.release_name, "parson"), src=self.deps_cpp_info["Parson"].include_paths[0])
+        self.copy(pattern="parson.c", dst=path.join(self.release_name, "parson"), src=path.join(self.deps_cpp_info["Parson"].rootpath, "src"))
         tools.replace_in_file("%s/CMakeLists.txt" % self.release_name, "project(azure_iot_sdks)", conan_magic_lines)
         cmake = CMake(self)
         cmake.definitions["build_as_dynamic"] = self.options.shared
@@ -32,6 +33,7 @@ class AzureiotsdkcConan(ConanFile):
         cmake.definitions["azure_c_shared_utility_DIR"] = self.deps_cpp_info["Azure-C-Shared-Utility"].res_paths[0]
         cmake.definitions["uamqp_DIR"] = self.deps_cpp_info["Azure-uAMQP-C"].res_paths[0]
         cmake.definitions["umqtt_DIR"] = self.deps_cpp_info["Azure-uMQTT-C"].res_paths[0]
+        cmake.definitions["AZURE_C_SHARED_UTILITY_INCLUDES"] = self.deps_cpp_info["Azure-C-Shared-Utility"].include_paths[0]
         cmake.configure(source_dir=self.release_name)
         cmake.build()
 
