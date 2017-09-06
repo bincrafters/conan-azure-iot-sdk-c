@@ -22,6 +22,9 @@ class AzureiotsdkcConan(ConanFile):
         if self.settings.os == "Windows" and self.settings.compiler == "Visual Studio":
             self.options.shared = False
 
+        if self.settings.os == "Linux":
+            self.options.shared = True
+
     def build(self):
         conan_magic_lines='''project(azure_iot_sdks)
         include(../conanbuildinfo.cmake)
@@ -47,11 +50,11 @@ class AzureiotsdkcConan(ConanFile):
         self.copy(pattern="LICENSE", dst=".", src=".")
         self.copy(pattern="*", dst="include", src=path.join(self.release_name, "iothub_client", "inc"))
         self.copy(pattern="*", dst="include", src=path.join(self.release_name, "iothub_service_client", "inc"))
-        self.copy(pattern="*.lib", dst="lib", src="lib")
-        self.copy(pattern="*.dll", dst="bin", src=".")
-        self.copy(pattern="*.a", dst="lib", src="lib")
-        self.copy(pattern="*.so*", dst="lib", src=".")
-        self.copy(pattern="*.dylib", dst="lib", src=".")
+        self.copy(pattern="*.lib", dst="lib", src="lib", keep_path=False)
+        self.copy(pattern="*.dll", dst="bin", src=".", keep_path=False)
+        self.copy(pattern="*.a", dst="lib", src="lib", keep_path=False)
+        self.copy(pattern="*.so*", dst="lib", src=".", keep_path=False)
+        self.copy(pattern="*.dylib", dst="lib", src=".", keep_path=False)
 
     def package_info(self):
         self.cpp_info.libs = self.collect_libs()

@@ -1,13 +1,15 @@
-project(PackageTest CXX)
 cmake_minimum_required(VERSION 2.8.12)
+project(iothub_client_sample_mqtt)
 
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()
 
-add_executable(example example.cpp)
-target_link_libraries(example ${CONAN_LIBS})
+file(GLOB SOURCE_FILES *.c)
+
+add_executable(${CMAKE_PROJECT_NAME} ${SOURCE_FILES})
+target_link_libraries(${CMAKE_PROJECT_NAME} ${CONAN_LIBS})
 
 enable_testing()
-add_test(NAME example
+add_test(NAME test-all
          WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/bin
-         COMMAND example)
+         COMMAND ${CMAKE_PROJECT_NAME})
