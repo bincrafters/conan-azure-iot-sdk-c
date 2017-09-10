@@ -51,10 +51,10 @@ class AzureiotsdkcConan(ConanFile):
         self.copy(pattern="*", dst="include", src=path.join(self.release_name, "iothub_client", "inc"))
         self.copy(pattern="*", dst="include", src=path.join(self.release_name, "iothub_service_client", "inc"))
         self.copy(pattern="*.lib", dst="lib", src="lib", keep_path=False)
-        self.copy(pattern="*.dll", dst="bin", src=".", keep_path=False)
         self.copy(pattern="*.a", dst="lib", src="lib", keep_path=False)
         self.copy(pattern="*.so*", dst="lib", src=".", keep_path=False)
         self.copy(pattern="*.dylib", dst="lib", src=".", keep_path=False)
+        self.copy(pattern="*.dll", dst="bin", src=".", keep_path=False)
 
     def package_info(self):
         self.cpp_info.libs = self.collect_libs()

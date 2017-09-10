@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.12)
-project(iothub_client_sample_mqtt)
+project(test_project)
 
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()
