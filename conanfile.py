@@ -12,7 +12,11 @@ class AzureiotsdkcConan(ConanFile):
     options = {"shared": [True, False]}
     default_options = "shared=False"
     generators = "cmake"
-    requires = "Azure-uMQTT-C/1.0.41@bincrafters/stable", "Azure-uAMQP-C/1.0.41@bincrafters/stable", "Parson/0.1.0@bincrafters/stable"
+    requires = "Azure-C-Shared-Utility/1.0.41@bincrafters/stable", \
+        "Azure-uMQTT-C/1.0.41@bincrafters/stable", \
+        "Azure-uAMQP-C/1.0.41@bincrafters/stable", \
+        "Parson/0.1.0@bincrafters/stable"
+        
     release_name = "azure-iot-sdk-c-2017-08-11"
 
     def source(self):
