@@ -10,7 +10,7 @@ class AzureiotsdkcConan(ConanFile):
     description = "A C99 SDK for connecting devices to Microsoft Azure IoT services"
     settings = "os", "compiler", "build_type", "arch"
     options = {"shared": [True, False]}
-    default_options = "shared=False"
+    default_options = "shared=True"
     generators = "cmake"
     requires = "Azure-C-Shared-Utility/1.0.41@bincrafters/stable", \
         "Azure-uMQTT-C/1.0.41@bincrafters/stable", \
