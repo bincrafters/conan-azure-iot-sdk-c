@@ -4,25 +4,27 @@ from conans import ConanFile, CMake, tools, util
 
 class AzureiotsdkcConan(ConanFile):
     name = "Azure-IoT-SDK-C"
-    version = "1.1.21"
-    license = "https://github.com/Azure/azure-iot-sdk-c/blob/master/LICENSE"
+    version = "1.1.23"
+    generators = "cmake"
+    settings = "os", "compiler", "build_type", "arch"
     url = "https://github.com/bincrafters/conan-azure-iot-sdk-c"
     description = "A C99 SDK for connecting devices to Microsoft Azure IoT services"
-    settings = "os", "compiler", "build_type", "arch"
+    license = "https://github.com/Azure/azure-iot-sdk-c/blob/master/LICENSE"
     options = {"shared": [True, False]}
     default_options = "shared=True"
-    generators = "cmake"
+    lib_short_name = "azure_iot_sdks"
+    release_date = "2017-08-11"
+    release_name = "%s-%s" % (name.lower(), release_date)
     requires = "Azure-C-Shared-Utility/1.0.41@bincrafters/stable", \
         "Azure-uMQTT-C/1.0.41@bincrafters/stable", \
         "Azure-uAMQP-C/1.0.41@bincrafters/stable", \
         "Parson/0.1.0@bincrafters/stable"
         
-    release_name = "azure-iot-sdk-c-2017-08-11"
-
     def source(self):
-        tools.get("https://github.com/Azure/azure-iot-sdk-c/archive/2017-08-11.tar.gz")
+        tools.get("%s/archive/%s.tar.gz" % (self.source_url, self.release_date))
 
     def configure(self):
+        # TODO: static library fails on Linux
         if self.settings.os == "Windows" and self.settings.compiler == "Visual Studio":
             self.options.shared = False
 
