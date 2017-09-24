@@ -15,10 +15,10 @@ class AzureiotsdkcConan(ConanFile):
     lib_short_name = "azure_iot_sdks"
     release_date = "2017-09-08"
     release_name = "%s-%s" % (name.lower(), release_date)
-    requires = "Azure-C-Shared-Utility/1.0.43@bincrafters/testing", \
-        "Azure-uMQTT-C/1.0.43@bincrafters/testing", \
-        "Azure-uAMQP-C/1.0.43@bincrafters/testing", \
-        "Parson/0.1.0@bincrafters/testing"
+    requires = "Azure-C-Shared-Utility/1.0.43@bincrafters/stable", \
+        "Azure-uMQTT-C/1.0.43@bincrafters/stable", \
+        "Azure-uAMQP-C/1.0.43@bincrafters/stable", \
+        "Parson/0.1.0@bincrafters/stable"
         
     def source(self):
         source_url = "https://github.com/Azure/azure-c-shared-utility"
