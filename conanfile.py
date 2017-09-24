@@ -4,7 +4,7 @@ from conans import ConanFile, CMake, tools, util
 
 class AzureiotsdkcConan(ConanFile):
     name = "Azure-IoT-SDK-C"
-    version = "1.1.23"
+    version = "1.1.21"
     generators = "cmake"
     settings = "os", "compiler", "build_type", "arch"
     url = "https://github.com/bincrafters/conan-azure-iot-sdk-c"
