@@ -4,7 +4,7 @@ from conans import ConanFile, CMake, tools, util
 
 class AzureiotsdkcConan(ConanFile):
     name = "Azure-IoT-SDK-C"
-    version = "1.1.21"
+    version = "1.1.23"
     generators = "cmake"
     settings = "os", "compiler", "build_type", "arch"
     url = "https://github.com/bincrafters/conan-azure-iot-sdk-c"
@@ -13,12 +13,12 @@ class AzureiotsdkcConan(ConanFile):
     options = {"shared": [True, False]}
     default_options = "shared=True"
     lib_short_name = "azure_iot_sdks"
-    release_date = "2017-08-11"
+    release_date = "2017-09-08"
     release_name = "%s-%s" % (name.lower(), release_date)
-    requires = "Azure-C-Shared-Utility/1.0.41@bincrafters/stable", \
-        "Azure-uMQTT-C/1.0.41@bincrafters/stable", \
-        "Azure-uAMQP-C/1.0.41@bincrafters/stable", \
-        "Parson/0.1.0@bincrafters/stable"
+    requires = "Azure-C-Shared-Utility/1.0.43@bincrafters/testing", \
+        "Azure-uMQTT-C/1.0.43@bincrafters/testing", \
+        "Azure-uAMQP-C/1.0.43@bincrafters/testing", \
+        "Parson/0.1.0@bincrafters/testing"
         
     def source(self):
         tools.get("%s/archive/%s.tar.gz" % (self.source_url, self.release_date))
