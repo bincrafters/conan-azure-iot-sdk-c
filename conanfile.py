@@ -24,14 +24,6 @@ class AzureiotsdkcConan(ConanFile):
         source_url = "https://github.com/Azure/azure-c-shared-utility"
         tools.get("%s/archive/%s.tar.gz" % (source_url, self.release_date))
 
-    def configure(self):
-        # TODO: static library fails on Linux
-        if self.settings.os == "Windows" and self.settings.compiler == "Visual Studio":
-            self.options.shared = False
-
-        if self.settings.os == "Linux":
-            self.options.shared = True
-
     def build(self):
         conan_magic_lines='''project(azure_iot_sdks)
         include(../conanbuildinfo.cmake)
