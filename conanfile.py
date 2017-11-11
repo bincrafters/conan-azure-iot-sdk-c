@@ -26,7 +26,10 @@ class AzureiotsdkcConan(ConanFile):
         tools.get("%s/archive/%s.tar.gz" % (source_url, self.release_date))
 
     def configure(self):
-        #  XXX (uilian): hidden symbol `curl_easy_getinfo' when libcurl is static
+        # XXX (uilian): Some linkage errors must be solved on Windows
+        if self.settings.os == "Windows":
+            self.options.shared = False
+        # XXX (uilian): hidden symbol `curl_easy_getinfo' when libcurl is static
         if self.settings.os != "Windows":
             self.options["libcurl"].shared = True
 
@@ -39,6 +42,11 @@ class AzureiotsdkcConan(ConanFile):
         tools.replace_in_file(cmake_file, "project(azure_iot_sdks)", conan_magic_lines)
         tools.replace_in_file(cmake_file, 'include("dependencies.cmake")', "")
         tools.replace_in_file(cmake_file, 'set_platform_files(${CMAKE_CURRENT_LIST_DIR}/c-utility)', "")
+        if self.settings.os == "Windows":
+            cmake_file = os.path.join(self.root_dir, "iothub_client", "CMakeLists.txt")
+            conan_magic_lines = "target_link_libraries(iothub_client_dll ${iothub_client_libs} ${CONAN_LIBS} Winhttp)"
+            tools.replace_in_file(cmake_file, 'target_link_libraries(iothub_client_dll ${iothub_client_libs})', conan_magic_lines)
+
         parson_dst = os.path.join(self.root_dir, "deps", "parson")
         self.copy(pattern="parson.h", dst=parson_dst, src=self.deps_cpp_info["Parson"].include_paths[0])
         self.copy(pattern="parson.c", dst=parson_dst, src=os.path.join(self.deps_cpp_info["Parson"].rootpath, "src"))
@@ -47,6 +55,8 @@ class AzureiotsdkcConan(ConanFile):
             cmake.definitions["build_as_dynamic"] = self.settings.os == "Windows" and self.options.shared
             cmake.definitions["skip_samples"] = True
             cmake.definitions["use_installed_dependencies"] = True
+            if self.settings.os == "Windows" and self.options.shared:
+                cmake.definitions["CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS"] = True
             cmake.configure(source_dir=os.getcwd())
             cmake.build()
 
@@ -62,3 +72,5 @@ class AzureiotsdkcConan(ConanFile):
 
     def package_info(self):
         self.cpp_info.libs = tools.collect_libs(self)
+        if self.settings.os == "Windows":
+            self.cpp_info.libs.append("Winhttp")
