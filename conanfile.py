@@ -13,6 +13,7 @@ class AzureiotsdkcConan(ConanFile):
     license = "https://github.com/Azure/azure-iot-sdk-c/blob/master/LICENSE"
     options = {"shared": [True, False]}
     default_options = "shared=False"
+    exports = ["LICENSE.md"]
     lib_short_name = "azure_iot_sdks"
     root_dir = "%s-%s" % (name.lower(), release_date)
     requires = "Azure-C-Shared-Utility/[>=1.0.46]@bincrafters/stable", \
